@@ -1,0 +1,39 @@
+package rules;
+
+import com.store.discount.dto.UserBill;
+
+rule "Employee Discount 30%"
+salience 4
+when
+    $bill : UserBill(userCategory == "EMPLOYEE")
+then
+    $bill.setDiscountPercentage($bill.getDiscountPercentage().add(BigDecimal.valueOf(30));
+    update($bill);
+end
+
+rule "Affiliate Discount 10%"
+salience 3
+when
+    $bill : UserBill(userCategory == "AFFILIATE")
+then
+    $bill.setDiscountPercentage($bill.getDiscountPercentage().add(BigDecimal.valueOf(10));
+    update($bill);
+end
+
+rule "Customer Discount 5%"
+salience 2
+when
+    $bill : UserBill(userCategory == "AFFILIATE")
+then
+    $bill.setDiscountPercentage($bill.getDiscountPercentage().add(BigDecimal.valueOf(5));
+    update($bill);
+end
+
+rule "No discount for grocery"
+salience 1
+when
+    $bill : UserBill(productType == "GROCERY")
+then
+    $bill.setDiscountPercentage(BigDecimal.valueOf(0);
+    update($bill);
+end
